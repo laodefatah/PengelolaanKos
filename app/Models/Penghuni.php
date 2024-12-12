@@ -10,7 +10,7 @@ class Penghuni extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    
+    protected $fillable = ['nama','no_whatsapp','tanggal_masuk'];
 
     public function kamar()
     {
