@@ -18,11 +18,10 @@ class KamarFactory extends Factory
     public function definition(): array
     {
         return [
-            'pemilik_id' => Pemilik::factory(), // Menggunakan factory Pemilik untuk membuat pemilik baru
-            'nomor_kamar' => $this->faker->unique()->numberBetween(1, 100), // Nomor kamar unik
-            'harga_sewa' => $this->faker->randomFloat(2, 500000, 2000000), // Harga sewa antara 500.000 dan 2.000.000
-            'fasilitas' => $this->faker->sentence(3), // Fasilitas kamar
-            'status' => $this->faker->randomElement(['terisi', 'kosong']), // Status kamar
+            'no_kamar' => $this->faker->word(),
+            'tipe_kamar' => $this->faker->randomElement(['A', 'B', 'C']), 
+            'harga_per_bulan' => $this->faker->numberBetween(500000, 2000000), 
+            'status' => $this->faker->randomElement(['tersedia', 'terisi']), 
         ];
     }
 }

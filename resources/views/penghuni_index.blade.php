@@ -1,50 +1,83 @@
 @extends('layout.index', ['title' => 'Data Penghuni Kos'])
+
 @section('content')
-    <!DOCTYPE html>
-    <html lang="en">
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Data Penghuni</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    </head>
-
-    <body>
-        <main class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Data Penghuni Kos</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table id="basic-datatables" class="display table table-striped table-hover">
-                                    <tr>
-                                        <th>NO</th>
-                                        <th>Nama</th>
-                                        <th>Nomor Whatsapp</th>
-                                        <th>Tanggal Masuk</th>
-                                        <th>Tanggal Keluar</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                    @foreach ($penghuni as $item)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->nama }}</td>
-                                            <td>{{ $item->no_whatsapp }}</td>
-                                            <td>{{ $item->tanggal_masuk }}</td>
-                                            <td>{{ $item->tanggal_keluar ?? 'Belum Keluar' }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+@if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
                     </div>
-                </div>
+                @endif
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h4 class="card-title">Data Penghuni Kos</h4>
+        <a href="/penghuni/create" class="btn btn-primary">Tambah Penghuni</a>
+    </div>
+    <div class="card-body">
+        <!-- Notifikasi -->
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </main>
-    </body>
-    </html>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <!-- Form Pencarian -->
+        <form action="{{ url('/penghuni') }}" method="GET" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Cari Nama Penghuni..." value="{{ request('search') }}">
+                <button type="submit" class="btn btn-primary">Cari</button>
+            </div>
+        </form>
+
+        <!-- Tabel -->
+        <div class="table-responsive">
+            <table id="basic-datatables" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>No WhatsApp</th>
+                        <th>Tanggal Masuk</th>
+                        <th>Tanggal Keluar</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($penghuni as $key => $item)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $item->nama }}</td>
+                            <td>{{ $item->no_whatsapp }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->tanggal_masuk)->format('d M Y') }}</td>
+                            <td>{{ $item->tanggal_keluar ? \Carbon\Carbon::parse($item->tanggal_keluar)->format('d M Y') : 'Belum Keluar' }}</td>
+                            <td>
+                                <a href="/penghuni/{{ $item->id }}/edit" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="/penghuni/{{ $item->id }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                        Hapus
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-center">Tidak ada data penghuni.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+            <!-- Pagination -->
+            {!! $penghuni->appends(['search' => request('search')])->links() !!}
+        </div>
+    </div>
+</div>
+@endsection

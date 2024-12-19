@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('kamars', function (Blueprint $table) {
             $table->id();
-            $table->string('No_Kamar');
-            $table->string('Tipe_Kamar');
-            $table->string('Harga_Per_Bulan');
-            $table->enum(column:"Status", allowed:["Terisi, Kosong"]);
+            $table->string('no_kamar');
+            $table->string('tipe_kamar', 1); // Tipe kamar hanya huruf 1 karakter (a-z)
+            $table->integer('harga_per_bulan');
+            $table->enum('status', ['tersedia', 'terisi'])->default('tersedia'); 
             $table->timestamps();
         });
     }

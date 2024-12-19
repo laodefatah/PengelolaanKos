@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('pemiliks', function (Blueprint $table) {
             $table->id();
-            $table->string('Nama');
-            $table->string('No_Whatsapp');
-            $table->string('Email');
+            $table->string('nama');
+            $table->string('no_whatsapp');
+            $table->string('email')->unique(); 
+            $table->timestamps(); 
         });
     }
 

@@ -1,36 +1,48 @@
-@extends('layout.index',['title'=> 'Tambah Data Penghuni Kos'])
-@section('content')
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title"> Tambah Penghuni</h5>
-            <form action="/pasien" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="form-group mt-1 mb-3">
-                    <label for="nama">Nama Penghuni</label>
-                    <input type="input" class="form-control @error('nama')is-invalid
-                    @enderror" id="nama" name="nama" value="{{ old('nama') }}" placeholder=" Masukkan Nama">
-                    <span class="text-danger">{{ $errors->first('nama') }}</span>
-                </div>
-                <div class="form-group mt-1 mb-3">
-                    <label for="no_pasien">No Whatsapp</label>
-                    <input type="input" class="form-control @error('no_pasien')is-invalid
-                    @enderror" id="no_pasien" name="no_pasien" value="{{ old('no_pasien') }}" placeholder=" Masukkan No Pasien">
-                    <span class="text-danger">{{ $errors->first('no_pasien') }}</span>
-                </div>
-                <div class="form-group mt-1 mb-3">
-                    <label for="umur">Tanggal Masuk</label>
-                    <input type="number" class="form-control @error('umur')is-invalid
-                    @enderror"  id="umur" name="umur" value="{{ old('umur') }}" placeholder="Masukkan Umur">
-                    <span class="text-danger">{{ $errors->first('umur') }}</span>
-                 </div>
-                <div class="form-group mt-1 mb-3">
-                    <label for="alamat">Alamat</label>
-                    <input type="input" class="form-control @error('alamat')is-invalid
-                    @enderror" id="alamat" name="alamat" value="{{ old('alamat') }}" placeholder="Masukkan Alamat">
-                    <span class="text-danger">{{ $errors->first('alamat') }}</span>
-                 </div>
+@extends('layout.index', ['title' => 'Tambah Data Penghuni Kos'])
 
-                <button type="submit" class="btn btn-primary">Simpan</button>
-        </form>
-    </div>
+@section('content')
+        <div class="card-body">
+            <main class="container">
+                <div class="row">
+                    <div class="col-md-10" style="margin-left: 200px">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Tambah Penghuni</h5>
+                                <form action="{{ route('penghuni.store') }}" method="POST">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="nama">Nama Penghuni</label>
+                                        <input type="text" name="nama" id="nama"
+                                            class="form-control @error('nama') is-invalid @enderror"
+                                            value="{{ old('nama') }}" placeholder="Masukkan Nama">
+                                        @error('nama')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="no_whatsapp">No WhatsApp</label>
+                                        <input type="text" name="no_whatsapp" id="no_whatsapp"
+                                            class="form-control @error('no_whatsapp') is-invalid @enderror"
+                                            value="{{ old('no_whatsapp') }}" placeholder="Masukkan No WhatsApp">
+                                        @error('no_whatsapp')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tanggal_masuk">Tanggal Masuk</label>
+                                        <input type="date" name="tanggal_masuk" id="tanggal_masuk"
+                                            class="form-control @error('tanggal_masuk') is-invalid @enderror"
+                                            value="{{ old('tanggal_masuk') }}">
+                                        @error('tanggal_masuk')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
 @endsection

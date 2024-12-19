@@ -13,8 +13,18 @@ return new class extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
-            $table->integer('Pembayaran');
+            $table->unsignedBigInteger('kamar_id');
+            $table->unsignedBigInteger('penghuni_id');
+            $table->decimal('jumlah_pembayaran', 10, 2);
+            $table->string('status_pembayaran')->default('Belum Lunas');
+            $table->date('tanggal_transaksi');
             $table->timestamps();
+
+            // Foreign keys dengan indeks
+            $table->foreign('kamar_id')->references('id')->on('kamars')->onDelete('cascade');
+            $table->foreign('penghuni_id')->references('id')->on('penghunis')->onDelete('cascade');
+
+            $table->index(['kamar_id', 'penghuni_id']);
         });
     }
 

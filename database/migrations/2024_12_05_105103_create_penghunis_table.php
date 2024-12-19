@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('penghunis', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('kamar_id')->nullable();
             $table->string('nama');
             $table->string('no_whatsapp');
             $table->date('tanggal_masuk');
-            $table->timestamp('tanggal_keluar')->nullable();
+            $table->date('tanggal_keluar')->nullable();
             $table->timestamps();
+        
+            $table->foreign('kamar_id')->references('id')->on('kamars')->onDelete('set null');
         });
     }
 
