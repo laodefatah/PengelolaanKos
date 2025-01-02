@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Penghuni;
+use App\Models\Kamar;
 
 class DashboardController extends Controller
 {
@@ -15,9 +17,11 @@ class DashboardController extends Controller
         $role = Auth::user()->role;
 
         if ($role === 'admin') {
-            return view('admin_dashboard');
+            return view('dashboard_admin');
         } elseif ($role === 'guest') {
-            return view('landing_page');
+            $data['kamars'] = Kamar::all();
+        $data['penghunis'] = Penghuni::all();
+            return view('landing_page', $data);
         }
 
         abort(403, 'Unauthorized access');

@@ -1,12 +1,12 @@
 @extends('layout.index', ['title' => 'Dashboard Admin'])
 
 @section('content')
-@if (session('success'))
+{{-- @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-@endif
+@endif --}}
 
 <div class="row">
     <!-- Card Jumlah Penghuni -->
@@ -15,7 +15,7 @@
             <div class="card-header">Jumlah Penghuni</div>
             <div class="card-body">
                 <h5 class="card-title text-center">{{ $jumlahPenghuni }}</h5>
-                <p class="card-text text-center">Orang</p>
+                <p class="card-text text-center">orang</p>
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Card Kamar Terisi -->
     <div class="col-md-4">
         <div class="card text-white bg-danger mb-3">
@@ -41,5 +41,6 @@
             </div>
         </div>
     </div>
+    
 </div>
 @endsection

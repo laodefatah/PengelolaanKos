@@ -49,7 +49,7 @@
             <div class="logo-header" data-background-color="dark">
               <a href="index.html" class="logo">
                 <img
-                  src="assets/img/kaiadmin/logo_light.svg"
+                  src="{{ asset('assets/img/kaiadmin/logo_light.svg') }}"
                   alt="navbar brand"
                   class="navbar-brand"
                   height="20"
@@ -72,8 +72,10 @@
         <div class="sidebar-wrapper scrollbar scrollbar-inner">
             <div class="sidebar-content">
                 <ul class="nav nav-secondary">
-                    <li class="nav-item {{ Request::is('home') ? 'active' : '' }}">
-                        <a href="/home">
+                    <!-- Item untuk Admin -->
+                @if(Auth::check() && Auth::user()->role == 'admin')
+                    <li class="nav-item {{ Request::is('/dashboardadmin') ? 'active' : '' }}">
+                        <a href="{{ route('dashboard_admin') }}">
                             <i class="fas fa-home"></i>
                             <p>Dashboard</p>
                         </a>
@@ -90,18 +92,26 @@
                             <p>Data Kamar</p>
                         </a>
                     </li>
-                    <li class="nav-item {{ Request::is('transaksi') ? 'active' : '' }}">
-                        <a href="/transaksi">
-                            <i class="fas fa-money-bill"></i>
-                            <p>Transaksi</p>
-                        </a>
-                    </li>
                     <li class="nav-item {{ Request::is('laporan') ? 'active' : '' }}">
                         <a href="/transaksi/laporan">
                             <i class="fas fa-file-invoice-dollar"></i>
                             <p>Laporan</p>
                         </a>
                     </li>
+                @elseif (Auth::check() && Auth::user()->role == 'guest')
+                    <li class="nav-item {{ Request::is('/home') ? 'active' : '' }}">
+                        <a href="{{ route('home') }}">
+                            <i class="fas fa-home"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                @endif
+
+                    <li class="nav-item {{ Request::is('transaksi') ? 'active' : '' }}">
+                        <a href="/transaksi">
+                            <i class="fas fa-money-bill"></i>
+                            <p>Transaksi</p>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -119,11 +129,11 @@
                         <li class="nav-item dropdown topbar-user hidden-caret">
                             <a class="nav-link dropdown-toggle profile-pic" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div class="avatar-sm">
-                                    <img src="assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                                    <img src="{{ asset('assets/img/profile.jpg') }}" alt="..." class="avatar-img rounded-circle" />
                                 </div>
                                 <span class="profile-username">
                                     <span class="op-7">Hi,</span>
-                                    <span class="fw-bold">Hizrian</span>
+                                    <span class="fw-bold">Admin</span>
                                 </span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">

@@ -17,7 +17,7 @@
                 @error('email')
                 <small class="text-danger">{{ $message }}</small>
                 @enderror
-            </div>dadssada
+            </div>
             <div class="form-group mb-3">
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" class="form-control" placeholder="Masukkan password" required>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Penghuni;
 use App\Models\Kamar;
+use Illuminate\Support\Facades\Auth;
 
 class TransaksiController extends Controller
 {
@@ -42,6 +43,12 @@ class TransaksiController extends Controller
         ]);
 
         Transaksi::create($requestData);
+
+        // Cek apakah pengguna adalah guest
+    if (Auth::user()->role === 'guest') {
+        // Kirim alert menggunakan JavaScript dan redirect kembali ke halaman awal
+        return redirect('/')->with('alert', 'Transaksi berhasil ditambahkan.');
+    }
 
         return redirect('/transaksi')->with('success', 'Transaksi berhasil ditambahkan.');
     }

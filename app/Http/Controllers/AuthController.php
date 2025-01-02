@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Penghuni;
+use App\Models\Kamar;
 
 
 class AuthController extends Controller
@@ -36,7 +37,7 @@ class AuthController extends Controller
                     return redirect()->route('dashboard_admin')
                         ->with('success', 'Welcome, Admin!');
                 case 'guest':
-                    return redirect()->route('landing_page')
+                    return redirect()->route('home')
                         ->with('success', 'Welcome, Guest!');
                 default:
                     Auth::logout();
@@ -71,39 +72,36 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('landing_page')->with('success', 'Registration successful. You are now logged in.');
+        return redirect()->route('home')->with('success', 'Registration successful. You are now logged in.');
     }
 
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('landing_page');
+        return redirect()->route('home');
     }
     public function adminDashboard()
 {
-    if (Auth::check() && Auth::user()->role === 'admin') {
-        // Menghitung jumlah penghuni
-        $jumlahPenghuni = Penghuni::count();
+    // Menghitung jumlah penghuni
+    $jumlahPenghuni = Penghuni::count();
+    $kamarTersedia = Kamar::where('status', 'tersedia')->count();
+    $kamarTerisi = Kamar::where('status', 'terisi')->count();
 
-        // Menghitung jumlah kamar berdasarkan status
-        $kamarTersedia = \App\Models\Kamar::where('status', 'tersedia')->count();
-        $kamarTerisi = \App\Models\Kamar::where('status', 'terisi')->count();
-        // Return view dengan data yang dibutuhkan
-        return view('dashboard_admin', [
-            'jumlahPenghuni' => $jumlahPenghuni,
-            'kamarTersedia' => $kamarTersedia,
-            'kamarTerisi' => $kamarTerisi,
-        ]);
-    }
-    abort(403, 'Unauthorized access');
+    return view('dashboard_admin', [
+        'jumlahPenghuni' => $jumlahPenghuni,
+        'kamarTersedia' => $kamarTersedia,
+        'kamarTerisi' => $kamarTerisi,
+    ]);
 }
 
-    public function guestDashboard()
-    {
-        $penghuni = Penghuni::All();
-        if (Auth::check() && Auth::user()->role === 'guest') {
-            return view('landing_page');        }
-        abort(403, 'Unauthorized access');
-    }
-    
+
+public function guestDashboard()
+{
+    $data['kamars'] = Kamar::where('status', 'tersedia')->latest()->get();
+    $data['penghunis'] = Penghuni::all();
+
+    return view('landing_page',  $data);  // pass as an associative array
+}
+
+
 }
